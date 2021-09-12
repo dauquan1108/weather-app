@@ -1,0 +1,58 @@
+.view {
+    margin-top: 5%;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: #36a5c1;
+    padding: 20px;
+}
+
+.viewTop {
+    display: flex;
+    flex-direction: row;
+}
+.viewTop img {
+  width: 30px;
+}
+input {
+    flex: 1;
+    height: 40px;
+    font-size: 15px;
+    min-width: 300px;
+    padding-left: 10px;    
+    border: none;
+    color: inherit;
+    background-color: #4a484800;
+}
+input:focus {
+    outline: 0;
+}
+
+/* content */
+.view h1 {
+    color: aliceblue;
+}
+.view h2 {
+    color: aliceblue;
+}
+.view h3 {
+    color: aliceblue;
+    padding: 0 10px;
+}
+.view p {
+    font-size: 60px;
+    font-weight: 500;
+    color: aliceblue;
+}
+.distance {
+    height: 1px;
+    width: 100%;
+    background-color: aliceblue;
+}
+
+.contentBottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
