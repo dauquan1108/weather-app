@@ -4,7 +4,6 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    background-color: #36a5c1;
     padding: 20px;
 }
 
@@ -27,6 +26,9 @@ input {
 }
 input:focus {
     outline: 0;
+}
+.mic {
+    cursor: pointer;
 }
 
 /* content */

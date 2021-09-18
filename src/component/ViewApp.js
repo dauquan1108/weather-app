@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+// thu vien
 // axios
 import axios from "axios";
 // url
@@ -6,15 +7,20 @@ import { URL_API, APP_ID } from "../utils/URL";
 // style
 import "./style/style.css";
 //anh
-import search from "../image/search.svg";
+import search from "../image/search1.svg";
+
+// Component
+import Mic from "./Mic";
 
 function ViewApp(props) {
   const [data, setData] = useState([]);
-  const [VietnameseKeyWords, setVietnameseKeyWords] = useState("");
   const [value, setValue] = useState("");
+  const [color, setColor] = useState("Turquoise");
+  const [VietnameseKeyWords, setVietnameseKeyWords] = useState("");
   const defaults = "__";
 
   const VietnameseKey = (str) => {
+    console.log({ str });
     str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
     str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
     str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
@@ -48,10 +54,10 @@ function ViewApp(props) {
 
   // submit form
   const handleSubmit = (e) => {
-    VietnameseKey(value.toLowerCase());
+    const texts = value.toLowerCase().trim();
+    VietnameseKey(texts);
     e.preventDefault();
     setValue("");
-    console.log({ value });
   };
 
   const handleChange = (e) => {
@@ -62,7 +68,7 @@ function ViewApp(props) {
   useEffect(() => {
     axios
       .get(
-        `${URL_API}q=ho chi minh&appid=${APP_ID}&units=metric&lang=vi
+        `${URL_API}q=thanh hoa&appid=${APP_ID}&units=metric&lang=vi
           `
       )
       .then(function (response) {
@@ -95,41 +101,47 @@ function ViewApp(props) {
   }, [VietnameseKeyWords]);
 
   return (
-    <div className="view">
-      <div className="viewTop">
-        <img src={search} alt="search" />
-        <form onSubmit={handleSubmit} className="input">
-          <label>
-            <input
-              type="text"
-              value={value}
-              onChange={handleChange}
-              placeholder="Vui lòng nhập từ khóa..."
-            />
-          </label>
-        </form>
+    <React.Fragment>
+      <div
+        className="view"
+        style={{ backgroundColor: `${color}` || "Turquoise" }}
+      >
+        <div className="viewTop">
+          <img src={search} alt="search" />
+          <form onSubmit={handleSubmit} className="input">
+            <label>
+              <input
+                type="text"
+                value={value}
+                onChange={handleChange}
+                placeholder="Vui lòng nhập thành phố..."
+              />
+            </label>
+          </form>
+          <Mic VietnameseKey={VietnameseKey} setColor={setColor} />
+        </div>
+        <div className="distance" />
+        <h1>{(data && data.name) || defaults}</h1>
+        <h2> {(data.weather && data.weather[0].description) || defaults} </h2>
+        <img
+          src={
+            (data.weather &&
+              `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`) ||
+            `http://openweathermap.org/img/wn/10d@2x.png`
+          }
+          alt="img weather"
+        />
+        <p>{(data.main && Math.round(data.main.temp)) || defaults}°</p>
+        <div className="distance" />
+        <div className="contentBottom">
+          <h3>Độ ẩm: {(data.main && data.main.humidity) || defaults}%</h3>
+          <h3>
+            Tốc độ gió:{" "}
+            {(data.wind && data.wind.speed * 3, 6).toFixed(2) || defaults} km/h
+          </h3>
+        </div>
       </div>
-      <div className="distance" />
-      <h1>{(data && data.name) || defaults}</h1>
-      <h2> {(data.weather && data.weather[0].description) || defaults} </h2>
-      <img
-        src={
-          (data.weather &&
-            `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`) ||
-          `http://openweathermap.org/img/wn/10d@2x.png`
-        }
-        alt="img weather"
-      />
-      <p>{(data.main && Math.round(data.main.temp)) || defaults}°</p>
-      <div className="distance" />
-      <div className="contentBottom">
-        <h3>Độ ẩm: {(data.main && data.main.humidity) || defaults}%</h3>
-        <h3>
-          Tốc độ gió:{" "}
-          {(data.wind && data.wind.speed * 3, 6).toFixed(2) || defaults} km/h
-        </h3>
-      </div>
-    </div>
+    </React.Fragment>
   );
 }
 
